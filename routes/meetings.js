@@ -27,7 +27,7 @@ router.post(
   [
     auth,
     check('name', 'Name is required').not().isEmpty().trim(),
-    check('phone', 'Valid phone is required').not().isEmpty().isMobilePhone('any').trim(),
+    check('phone', 'Valid phone is required').not().isEmpty().trim(),
     check('date', 'Meeting date is required').not().isEmpty().trim(),
     check('time', 'Meeting time is required').not().isEmpty().trim()
   ],

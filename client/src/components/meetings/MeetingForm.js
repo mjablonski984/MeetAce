@@ -1,9 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react';
 import MeetingContext from '../../context/meeting/meetingContext';
+import AlertContext from '../../context/alert/alertContext';
+import Alerts from '../layout/Alerts';
 
 const MeetingForm = () => {
   const meetingContext = useContext(MeetingContext);
   const { addMeeting, updateMeeting, current, clearCurrent } = meetingContext;
+  const alertContext = useContext(AlertContext);
+
+  const { setAlert } = alertContext;
 
   useEffect(() => {
     if (current !== null) {
@@ -36,8 +41,18 @@ const MeetingForm = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (meeting.name === '') return;
+    const phoneRegex = /^\+*(\d{3})*[0-9,\- ]{8,}$/.test(phone);
+    const dateRegex = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/.test(date);
+    const timeRegex = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(time);
 
+    if (meeting.name === '' || !phoneRegex || !dateRegex || !timeRegex) {
+      if (!phoneRegex) setAlert('Please enter a valid phone number', 'danger');
+      if (!dateRegex) setAlert('Please enter a valid date: YYYY:MM:DD', 'danger');
+      if (!timeRegex) setAlert('Please enter a valid time: HH:MM', 'danger');
+
+      return;
+    }
+    // create new or update  exisiting meeting
     current === null ? addMeeting(meeting) : updateMeeting(meeting);
 
     clearAll();
@@ -49,6 +64,7 @@ const MeetingForm = () => {
 
   return (
     <form onSubmit={onSubmit}>
+      <Alerts />
       <h2>{current ? 'Update Meeting' : 'Add Meeting'}</h2>
       <input
         type="text"

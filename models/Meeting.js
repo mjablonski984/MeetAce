@@ -15,17 +15,17 @@ const MeetingSchema = new mongoose.Schema({
   phone: {
     type: String,
     required: true,
-    match: /^(\+[0-9]{2})?[-. ]?\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{3,4})$/
+    validate: (v) => /^\+*(\d{3})*[0-9,\- ]{8,}$/.test(v)
   },
   date: {
     type: String,
     required: true,
-    match: /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/
+    validate: (v) => /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/.test(v)
   },
   time: {
     type: String,
     required: true,
-    match: /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/
+    validate: (v) => /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(v)
   },
   description: {
     type: String,
