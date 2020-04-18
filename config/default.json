@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://<user>:<password>@cluster0-s0ach.mongodb.net/meetAce?retryWrites=true&w=majority",
+  "jwtSecret": "secret"
+}
